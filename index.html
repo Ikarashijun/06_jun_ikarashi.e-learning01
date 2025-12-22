@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>車両型ロボットアプリ</title>
+    <link rel="stylesheet" href="style.css";>
+</head>
+<body>
+    <header>
+        <h1>車両型ロボットアプリ</h1>
+        <nav>
+            <button id="btn-connect">ロボット接続</button>
+            <button class="btn-tab active">教示</button>
+            <button class="btn-tab">自動</button>
+            <button class="btn-tab">手動</button>
+        </nav>
+        <div id="status">● OFFLINE</div>
+    </header>
+
+    <main>
+        <!-- 教示タブは3つの画面で構成される -->
+        <section id="teach-tab"  class="tab-content active">
+            <div id="teach-display">
+                <h2>教示画面</h2>
+                <p class="input-items">進行方向</p>
+                    <select id="direction" name="direction">
+                        <option value="forward">前進</option>
+                        <option value="backward">後進</option>
+                        <option value="rightturn">右進</option>
+                        <option value="leftturn">左進</option>
+                    </select>
+
+                <p class="input-items">進行距離(m)</p>
+                    <input type="number" id="input-distance" value="0" step="1" min="0">
+                <p class="input-items">速度(m/s)</p>
+                    <input type="range" id="speed" value="1.0" min="0.1" max="3.0" step="0.1">
+                    <span id="display-speed">1.0</span>
+                <p class="input-items">加速度(m/s<sup>2</sup>)</p>
+                    <input type="range" id="accelarate" value="0.5" min="0.3" max="1.0" step="0.1">
+                    <span id="display-accelarate">0.5</span>
+                <p>
+                    <button id="add-point">＋　登録</button>
+                </p>
+            </div>
+
+            <div id="record-list">
+                <h2>登録リスト</h2>
+                <div class="record-item list-header">
+                    <span>方向</span><span>距離</span><span>速度</span><span>加速度</span>
+                </div>
+                <div id="list-container"></div>
+                <p>
+                    <button id="del-point">ー　削除</button>
+                </p>
+            </div>
+            
+            <div id="root-check">
+                <h2>軌跡確認</h2>
+                <p>
+                    <button id="check-start">確認</button>
+                </p>
+            </div>
+
+        </section>
+
+        <!-- 自動タブは2つの画面で構成される -->
+        <section id="auto-tab"  class="tab-content">
+            <div id="operate-command">
+                <h2>操作コマンド</h2>
+                <p>
+                    <button>運転準備</button>
+                    <button>自動起動</button>
+                    <button>一時停止</button>
+                </p>
+            </div>
+            
+            <div id="status-display">
+                <h2>状態表示</h2>
+            </div>
+        </section>
+
+        <!-- 手動タブは1つの画面で構成される -->
+        <section id="manual-tab"  class="tab-content">
+            <div id="manual-display">
+                <h2>手動操作</h2>
+                <p>速度設定</p>
+                <input type="range" id="speed" >
+                <p>
+                    <button>🔼</button>
+                    <button>🔽</button>
+                    <button>▶️</button>
+                    <button>◀️</button>
+                    <button>⏹️</button>
+                </p>
+            </div>
+        </section>
+
+    </main>
+    <script src="main.js"></script>
+</body>
+</html>

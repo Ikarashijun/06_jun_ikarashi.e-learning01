@@ -1,8 +1,12 @@
+/* --- 背景設定 --- */
+
 body {
-    font-family: sans-serif;
+    /* font-family: sans-serif; */
     background-color: #2c3e50;
-    color: #333;
+    /* color: #333; */
 }
+
+/* --- ヘッダー部分の設定 --- */
 
 header {
     background-color: #34495e;
@@ -12,71 +16,81 @@ header {
     justify-content: space-between;
     align-items: center;
     border-bottom: thick double #32a1ce;;
-
 }
-
 nav {
     display: flex;
     align-items: center;
     width: 50%;
     gap: 10px;
 }
-
-#btn-connect {
-    margin-right: auto;
+#status {
+    font-weight: bold;
+    transition: color; /* 色の変化を滑らかにする */
+    width: 100px;
+    text-align: right;
 }
-
+#btn-connect {
+    margin-right: auto;   /* 右側に自動で余白を作り、ボタンを左側に寄せる */
+    cursor: pointer;      /* マウスを乗せた時に指マーク（クリックできる印）に変える */
+    transition: all;      /* 色などが変わる時に、パッと変わらず「ふわっ」と動かす */
+    padding: 8px 15px;    /* ボタンの内側に余白を作って、ボタン自体を大きくする */
+    border: none;         /* 標準のグレーの枠線を消す */
+    font-weight: bold;    /* 文字を太くして目立たせる */
+}
 #teach-tab {
     display: flex;
     justify-content: space-around;
 }
+/* タブ切り替えの記述は以下 */
+.tab-content {
+    display: none !important;/* すべてのコンテンツを隠す */
+}
+.tab-content.active {
+    display: flex !important; /* activeがついた時だけ表示する *//* !importantをつけて優先度を最大にする */
+    justify-content: space-around;
+}
+.btn-tab.active {
+    background-color: #32a1ce;/* アクティブなボタンの背景色と文字色を変える */
+    color: white;
+}
+
+
+/* --- 教示タブ画面 --- */
 
 #teach-display, #record-list, #root-check{
     background-color: white;
     margin: 20px;
     padding: 20px;
-    min-width: 300px;
+    width: 350px;
 }
+.input-items {font-weight: bold;} /* 教示画面の文字太く */
 
-#auto-tab {
+
+/* 軌跡確認画面 */
+/* Canvasを囲む枠 */
+.canvas-container {
+    border: 1px solid #ccc;      /* 薄いグレーの枠線 */
+    background-color: #f9f9f9;   /* 背景はごく薄いグレー */
+    border-radius: 8px;          /* 角を少し丸くする */
+    overflow: hidden;            /* はみ出た部分を隠す */
+    /* Canvasを中央寄せにする設定 */
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
+    align-items: center;
 }
 
-#operate-command, #status-display {
-    background-color: white;
-    margin: 20px;
-    padding: 20px;
+/* 合計タイム表示の枠 */
+.time-display {
+    margin-top: 10px;            /* 上に少し隙間をあける */
+    padding: 10px;               /* 内側に余白を作る */
+    background-color: #ebf5fb;   /* 背景は薄い青色 */
+    border-radius: 5px;          /* 角を少し丸くする */
+    text-align: center;          /* 文字を真ん中に寄せる */
+    font-weight: bold;
+    color: #2c3e50;
 }
 
-#manual-tab {
-    display: flex;
-    justify-content: space-around;
-
-}
-
-#manual-display {
-    background-color: white;
-    margin: 20px;
-    padding: 20px;
-}
-
-/* すべてのコンテンツを隠す */
-.tab-content {
-    display: none !important;
-}
-
-/* activeがついた時だけ表示する */
-.tab-content.active {
-    display: flex !important; /* !importantをつけて優先度を最大にする */
-    justify-content: space-around;
-}
-/* アクティブなボタンの色を変えると分かりやすい */
-.btn-tab.active {
-    background-color: #32a1ce;
-    color: white;
-}
-
+/* 登録リスト画面 */
 .record-item {
     display: flex;
     justify-content: space-between;
@@ -87,11 +101,145 @@ nav {
 .record-item span {
     flex: 1; /* 各項目が均等な幅になるようにする */
     text-align: center;
-    white-space: nowrap; /* 文字の折り返しを禁止 */
 }
 
 
-/* 画面幅が狭い時に備えて、リストエリアに最低限の幅を持たせる */
+/* リスト全体の親要素の伸びを抑える */
 #record-list {
-    min-width: 300px; /* 必要に応じて調整 */
+    background-color: white;
+    margin: 20px;
+    padding: 20px;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column; /* 中身を縦に並べる */
+    height: fit-content;    /* 親要素が必要以上に伸びないようにする */
 }
+
+/* リストを表示する箱に高さを固定し、はみ出た分をスクロールさせる */
+#list-container {
+    max-height: 300px;    /* 好きな高さに調整してください */
+    overflow-y: auto;     /* 縦方向に中身が溢れたらスクロールバーを出す */
+    border: 1px solid #eee;
+    background-color: #fafafa;
+    margin-bottom: 10px;
+}
+
+
+/* 自動タブのパネル */
+
+/* ○の記号を太字にして見やすくするだけ */
+#auto-tab span {
+    font-size: 20px;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+/* 状態別の色指定（文字色を変えるだけなのでコードが短い） */
+.text-ready { color: orange; }
+.text-running { color: green; }
+.text-error { color: red; }
+
+
+/* --- 状態表示パネル --- */
+.status-panel {
+    background-color: white;
+    color: black;
+    padding: 20px;
+    border: 1px solid black;
+    width: fit-content;    /* 中身の幅に合わせる */
+    min-width: 200px;      /* 最低限の幅を確保 */
+}
+
+.status-list {
+    list-style: none;      /* 点（・）を消す */
+    padding: 0;
+    margin: 15px 0;        /* 上下に少し隙間を作る */
+}
+
+.status-list li {
+    margin-bottom: 10px;   /* 行ごとの隙間 */
+    font-size: 18px;       /* 文字を少し大きく */
+    display: flex;
+    align-items: center;   /* 記号と文字の縦中央を揃える */
+}
+
+.status-list span {
+    margin-right: 10px;    /* 記号と文字の間の隙間 */
+    font-weight: bold;
+}
+
+/* メッセージ表示部分 */
+#auto-message {
+    border-top: 1px solid black; /* 上側に線を引く */
+    padding-top: 10px;
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+
+/* 手動タブ画面 */
+
+/* 手動操作タブ内の特定の文字を白にする */
+.manual-text {
+    color: white;
+}
+
+/* スライダーの間隔を調整 */
+.speed-setting {
+    margin-bottom: 20px;
+}
+
+/* 手動操作パネルの中央寄せ */
+#manual-display {
+    background-color: transparent !important; /* 親の背景色を活かす */
+    text-align: center;
+    width: 100%;
+}
+
+/* 十字キーのレイアウト設定 */
+.manual-controls {
+    display: grid;
+    grid-template-columns: repeat(3, 80px); /* 80pxの列を3つ */
+    grid-template-rows: repeat(3, 80px);    /* 80pxの行を3つ */
+    gap: 15px;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+/* ボタンの基本デザイン */
+.m-btn {
+    background-color: #f8f9fa;
+    width: 80px;/* ボタンの幅 */
+    height: 80px;/* ボタンの高さ */
+    border-radius: 15px;/* 角を少し丸める */
+    border: none;/* 標準の枠線を消す */
+    background-color: #ecf0f1;/* ボタンの色（薄いグレー） */
+    font-size: 24px;/* 矢印などの文字を大きくする */
+    font-weight: bold;/* 文字を太くする */
+    color: #2c3e50;/* 文字の色（濃い紺色） */
+    cursor: pointer;/* マウスを乗せた時に指マークにする */
+}
+
+/* 各ボタンの配置場所指定 (列 / 行) */
+.up    { grid-column: 2; grid-row: 1; }/* 上：2列目の1行目 */
+.left  { grid-column: 1; grid-row: 2; }/* 左：1列目の2行目 */
+.stop  { 
+    grid-column: 2; grid-row: 2;        /* 停止：2列目の2行目（真ん中） */
+    background-color: #e74c3c;        /* 停止ボタンだけ目立つように赤色にする */
+    color: white;                     /* 停止ボタンの文字を白にする */
+    font-size: 16px;                    /* 「STOP」の文字がはみ出ないよう少し小さく */
+}
+.right { grid-column: 3; grid-row: 2; }/* 右：3列目の2行目 */
+.down  { grid-column: 2; grid-row: 3; }/* 下：2列目の3行目 */
+
+/* ボタンを押している間の色変更 */
+.m-btn:active {
+    background-color: #3498db;
+    color: white;
+}
+
+/* 停止ボタンを押してる間の色変更 */
+.stop:active {
+    background-color: #c0392b;/* 押すともっと濃い赤色 */
+}
+

@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="style.css";>
 </head>
 <body>
+    <!-- ヘッダーはアプリ名と切り替えタブで構成 -->
     <header>
         <h1>車両型ロボットアプリ</h1>
         <nav>
@@ -19,8 +20,9 @@
     </header>
 
     <main>
-        <!-- 教示タブは3つの画面で構成される -->
+        <!-- 以下は教示タブで、3つの画面で構成される -->
         <section id="teach-tab"  class="tab-content active">
+            <!-- 教示画面は左に配置するイメージ -->
             <div id="teach-display">
                 <h2>教示画面</h2>
                 <p class="input-items">進行方向</p>
@@ -33,66 +35,80 @@
 
                 <p class="input-items">進行距離(m)</p>
                     <input type="number" id="input-distance" value="0" step="1" min="0">
+                
                 <p class="input-items">速度(m/s)</p>
                     <input type="range" id="speed" value="1.0" min="0.1" max="3.0" step="0.1">
                     <span id="display-speed">1.0</span>
+                
                 <p class="input-items">加速度(m/s<sup>2</sup>)</p>
                     <input type="range" id="accelarate" value="0.5" min="0.3" max="1.0" step="0.1">
                     <span id="display-accelarate">0.5</span>
+                
                 <p>
                     <button id="add-point">＋　登録</button>
                 </p>
             </div>
-
+            <!-- 登録画面は真ん中に配置するイメージ -->
             <div id="record-list">
                 <h2>登録リスト</h2>
+
                 <div class="record-item list-header">
                     <span>方向</span><span>距離</span><span>速度</span><span>加速度</span>
                 </div>
+
                 <div id="list-container"></div>
+                
                 <p>
                     <button id="del-point">ー　削除</button>
                 </p>
             </div>
-            
+            <!-- 軌跡確認画面は右に配置するイメージ -->
             <div id="root-check">
                 <h2>軌跡確認</h2>
-                <p>
-                    <button id="check-start">確認</button>
-                </p>
+                
+                <div class="canvas-container">
+                    <canvas id="teaching-canvas"></canvas>
+                </div>
+
+                <div class="time-display">
+                    <span>合計サイクルタイム: <span id="total-time">0.0</span> 秒</span>
+                </div>
             </div>
 
         </section>
 
-        <!-- 自動タブは2つの画面で構成される -->
-        <section id="auto-tab"  class="tab-content">
-            <div id="operate-command">
-                <h2>操作コマンド</h2>
-                <p>
-                    <button>運転準備</button>
-                    <button>自動起動</button>
-                    <button>一時停止</button>
-                </p>
-            </div>
-            
-            <div id="status-display">
-                <h2>状態表示</h2>
+        <!-- 以下は自動タブで、2つの画面で構成される -->
+        <section id="auto-tab" class="tab-content">
+            <div class="status-panel">
+                <h3>状態表示画面</h3>
+                <!-- 余裕があれば項目を増やす予定 -->
+                <ul class="status-list">
+                    <li><span id="mark-ready">○</span> 運転準備</li>
+                    <li><span id="mark-running">○</span> 自動起動</li>
+                    <li><span id="mark-error">○</span> 総合異常</li>
+                </ul>
+
+                <p id="auto-message">待機中</p>
             </div>
         </section>
 
-        <!-- 手動タブは1つの画面で構成される -->
-        <section id="manual-tab"  class="tab-content">
+        <!-- 以下は手動タブで、1つの画面で構成される -->
+        <section id="manual-tab" class="tab-content">
             <div id="manual-display">
-                <h2>手動操作</h2>
-                <p>速度設定</p>
-                <input type="range" id="speed" >
-                <p>
-                    <button>🔼</button>
-                    <button>🔽</button>
-                    <button>▶️</button>
-                    <button>◀️</button>
-                    <button>⏹️</button>
-                </p>
+                <h2 class="manual-text">手動操作</h2>
+                
+                <div class="speed-setting">
+                    <p class="manual-text">速度設定: <span id="manual-speed-val">1.0</span> m/s</p>
+                    <input type="range" id="manual-speed" value="1.0" min="0.1" max="3.0" step="0.1">
+                </div>
+
+                <div class="manual-controls">
+                    <button class="m-btn up" data-action="forward">▲</button>
+                    <button class="m-btn left" data-action="left">◀</button>
+                    <button class="m-btn stop" data-action="stop">STOP</button>
+                    <button class="m-btn right" data-action="right">▶</button>
+                    <button class="m-btn down" data-action="backward">▼</button>
+                </div>
             </div>
         </section>
 
